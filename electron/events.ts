@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import fs from 'fs';
+import type { Folder } from '../src/models/files';
 
 export function addEvents(win: BrowserWindow) {
 
@@ -34,6 +35,25 @@ export function addEvents(win: BrowserWindow) {
 
   ipcMain.handle('loadDirectory', () => {
     console.log('loadDirectory');
-    return ['Apple', 'Banana', 'Cherry'];
+    const path = 'C:\\Users\\smuenchow\\Downloads\\00_privat\\avatars';
+    return fs.promises.readdir(path, { withFileTypes: true })
+      .then(results => results.filter(result => result.isDirectory()))
+      .then(dirs => dirs.map(dir => {
+        const dirPath = path + '\\' + dir.name;
+        const folder: Folder = {
+          name: dir.name,
+          path: dirPath
+        };
+        const dirContent = fs.readdirSync(dirPath, { withFileTypes: true });
+        const files = dirContent.filter(file => !file.isDirectory());
+        if (files.length > 0) {
+          const file = files[0];
+          folder.cover = {
+            name: file.name,
+            path: dirPath + '\\' + file.name
+          };
+        }
+        return folder;
+      }));
   });
 }
