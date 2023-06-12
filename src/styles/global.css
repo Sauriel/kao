@@ -9,16 +9,12 @@
   --color-font--dark: #afb1b3;
 
   --blur-color: rgba(237, 240, 242, 0.25);
+  --blur: blur(10px);
 
-  --warning-color: #ffd0ca;
-  --success-color: #aeccb3;
+  --color-warning: #ffd0ca;
+  --color-success: #aeccb3;
 
-  --smalltext: 12px;
-  --seperator: 1px solid var(--fontcolor-dark);
-  --animation-nav: 0.2s ease-in-out;
-  --side-margin: 0 5vw;
-  --border-bright: 1px solid var(--fontcolor-dark);
-  --border-dark: 1px solid var(--background-light);
+  --animation: 0.2s ease-in-out;
   --border-radius: 8px;
 }
 
@@ -80,7 +76,26 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
+
+*::-webkit-scrollbar-track {
+  background-color: transparent;
+  box-shadow: inset 0 0 0.5rem rgba(0 0 0 / 30%);
+}
+
+*::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: var(--color-background--light);
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 20000px;
+  background-color: var(--color-font);
+}
+
 
 [astro-icon] {
   width: 1em;

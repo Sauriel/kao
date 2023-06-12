@@ -1,0 +1,87 @@
+import * as fs from 'fs/promises';
+import * as fsSync from 'fs';
+import type DirOrFile from '../../shared/models/files';
+import type { Directory, File } from '../../shared/models/files';
+import type { Dirent } from 'fs';
+import { sortAlpha } from './sorting';
+
+const ALLOWED_IMAGE_EXTENSIONS: string[] = ['png', 'jpg', 'jpeg', 'webp', 'gif', 'svg'];
+const FILE_BLACKLIST: RegExp[] = [
+  /.*\.lnk$/gi
+];
+
+function convertDirContent(value: Dirent, path: string): DirOrFile {
+  if (value.isDirectory()) {
+    return createDirectory(value.name, path);
+  } else {
+    return createFile(value.name, path);
+  }
+}
+
+function createDirectory(name: string, path: string): Directory {
+  const dir: Directory = {
+    type: 'directory',
+    name,
+    path
+  };
+
+  const cover = fsSync.readdirSync(path, { withFileTypes: true })
+    .filter(filterFiles)
+    .find(isCoverImage);
+  if (cover) {
+    dir.cover = createFile(cover.name, path + '\\' + cover.name);
+  }
+
+  return dir;
+}
+
+function createFile(name: string, path: string): File {
+  if (isImage(name)) {
+    return {
+      type: 'image',
+      name,
+      path
+    };
+  }
+  return {
+    type: 'unknown',
+    name,
+    path
+  };
+}
+
+function isImage(name: string): boolean {
+  const fileType = name.substring(name.lastIndexOf('.') + 1).toLowerCase();
+  return ALLOWED_IMAGE_EXTENSIONS.includes(fileType);
+}
+
+function fileNameEquals(file: Dirent, expected: string): boolean {
+  const name = file.name.substring(0, file.name.lastIndexOf('.'));
+  return name.toLowerCase() === expected.toLowerCase();
+}
+
+function isCoverImage(file: Dirent): boolean {
+  return !file.isDirectory() && isImage(file.name) && fileNameEquals(file, '0');
+}
+
+function filterFiles(file: Dirent): boolean {
+  for (const regexp of FILE_BLACKLIST) {
+    if (regexp.test(file.name)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function getSorting(type: string): (a: Dirent, b: Dirent) => number {
+  return sortAlpha;
+}
+
+async function lookupDirectory(path: string): Promise<DirOrFile[]> {
+  return fs.readdir(path, { withFileTypes: true })
+    .then(result => result.filter(filterFiles)
+      .sort(getSorting(''))
+      .map(value => convertDirContent(value, path + '\\' + value.name)));
+}
+
+export default lookupDirectory;

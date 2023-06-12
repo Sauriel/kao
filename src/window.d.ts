@@ -5,7 +5,7 @@ declare global {
       receive: (channel: string, func: (...args: any[]) => void) => void
     },
     electronAPI: {
-      loadDirectory: () => Promise<Folder[]>
+      loadDirectory: () => Promise<DirOrFile[]>
     }
   }
 }

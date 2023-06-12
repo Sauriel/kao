@@ -1,41 +1,22 @@
 <template>
   <div>
-    <h1>Hello Vue!</h1>
-    <ul>
-      <li v-for="(folder, index) of result" :key="index">
-        <img v-if="folder.cover" :src="folder.cover.path" :alt="folder.cover.name" />
-        <header>{{ folder.name }}</header>
-      </li>
-    </ul>
+    <Grid v-if="gridView" :items="items" />
+    <Flex v-else :items="items" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import type { Folder } from '../models/files';
+import type DirOrFile from '../../shared/models/files';
+import Flex from './library/flex.vue';
+import Grid from './library/grid.vue';
 
-const result = ref<Folder[]>([]);
+const gridView = ref(true);
+const items = ref<DirOrFile[]>([]);
 
 onMounted(() => {
-  window.ipcRenderer.send('loadLibrary');
-  window.electronAPI.loadDirectory().then((data) => result.value = data);
+  window.electronAPI
+    .loadDirectory()
+    .then((result) => items.value = result);
 })
 </script>
-
-<style scoped>
-  ul {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  li {
-    flex: 0 1 auto;
-    width: 20%;
-  }
-
-  img {
-    width: 100%;
-    height: auto;
-  }
-</style>

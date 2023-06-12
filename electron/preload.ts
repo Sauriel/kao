@@ -12,8 +12,7 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
     let validChannels = [
       'onAppMinimize',
       'onAppMaximize',
-      'onAppClose',
-      'loadLibrary'
+      'onAppClose'
     ] // <-- Array of all ipcRenderer Channels used in the client
     if (validChannels.includes(channel)) {
       ipcRenderer.send(channel, args)
@@ -21,9 +20,7 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   },
 
   receive: (channel: string, func: (...args: any[]) => void) => {
-    let validChannels = [
-      'onLibraryLoaded'
-    ] // <-- Array of all ipcMain Channels used in the electron
+    let validChannels = [] // <-- Array of all ipcMain Channels used in the electron
     if (validChannels.includes(channel)) {
       // Deliberately strip event as it includes `sender`
       ipcRenderer.on(channel, (event, ...args) => func(args))
