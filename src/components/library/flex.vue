@@ -1,7 +1,11 @@
 <template>
   <ul>
     <li v-for="(item, index) of items" :key="index">
-      <img v-if="item.cover" :src="item.cover.path" :alt="item.cover.name" />
+      <Image
+        :image="item.cover"
+        :unknown-type="item.type === 'unknown'"
+        class="cover"
+      />
       <header>{{ item.name }}</header>
     </li>
   </ul>
@@ -9,6 +13,7 @@
 
 <script setup lang="ts">
 import type DirOrFile from '../../../shared/models/files';
+import Image from './image.vue';
 
 type Props = {
   items: DirOrFile[];

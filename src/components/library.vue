@@ -11,7 +11,7 @@ import type DirOrFile from '../../shared/models/files';
 import Flex from './library/flex.vue';
 import Grid from './library/grid.vue';
 
-const gridView = ref(true);
+const gridView = ref(false);
 const items = ref<DirOrFile[]>([]);
 
 onMounted(() => {
