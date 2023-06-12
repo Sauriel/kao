@@ -32,7 +32,8 @@ export function addEvents(win: BrowserWindow) {
     //   .catch(err => console.error(err));
   });
 
-  ipcMain.on('initialize', (event, arg) => {
-    event.reply('onInitialized', false);
+  ipcMain.handle('loadDirectory', () => {
+    console.log('loadDirectory');
+    return ['Apple', 'Banana', 'Cherry'];
   });
 }

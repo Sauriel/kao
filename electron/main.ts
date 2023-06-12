@@ -6,14 +6,12 @@ import { addEvents } from './events';
 process.env.DIST = join(__dirname, '../dist');
 process.env.PUBLIC = app.isPackaged ? process.env.DIST : join(process.env.DIST, '../public');
 
-let win: BrowserWindow;
-
-async function createWindow() {
+async function createWindow(): BrowserWindow {
   const windowStateKeeper = new WindowStateKeeper("main");
-  const electronScreen = screen;
+  //const electronScreen = screen;
   //const size = electronScreen.getPrimaryDisplay().workAreaSize;
 
-  win = new BrowserWindow({
+  const win = new BrowserWindow({
     title: 'Main window',
     icon: path.resolve(process.env.PUBLIC, 'favicon.ico'),
     x: windowStateKeeper.state.x,
@@ -55,9 +53,10 @@ async function createWindow() {
     // Load your file
     win.loadFile('dist/index.html');
   }
+  return win;
 }
 
 app.whenReady().then(() => {
-  createWindow();
-  addEvents(win);
+  const window = createWindow();
+  addEvents(window);
 })

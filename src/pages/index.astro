@@ -1,10 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Library from '../components/library.vue';
 //import { initKao } from '../utils/init';
 
 //const data = await initKao();
 ---
 
 <Layout title="Welcome to Astro.">
-	<h1>Hello World!</h1>
+	<Library client:only="vue" />
 </Layout>
