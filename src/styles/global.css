@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap");
+
+:root {
+  --color-background: #272935;
+  --color-background--light: #313442;
+  --color-background--dark: #1a1b23;
+  --color-primary: #93000f;
+  --color-font: #edf0f2;
+  --color-font--dark: #afb1b3;
+
+  --blur-color: rgba(237, 240, 242, 0.25);
+
+  --warning-color: #ffd0ca;
+  --success-color: #aeccb3;
+
+  --smalltext: 12px;
+  --seperator: 1px solid var(--fontcolor-dark);
+  --animation-nav: 0.2s ease-in-out;
+  --side-margin: 0 5vw;
+  --border-bright: 1px solid var(--fontcolor-dark);
+  --border-dark: 1px solid var(--background-light);
+  --border-radius: 8px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+input,
+textarea,
+button {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: inherit;
+  cursor: pointer;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:focus {
+  outline: none;
+}
+
+p {
+  margin: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  color: var(--color-font);
+  font-family: "Open Sans", sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+[astro-icon] {
+  width: 1em;
+  height: 1em;
+}

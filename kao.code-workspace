@@ -4,5 +4,9 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"cssCustomProperties.files": [
+			"./src/styles/global.css"
+		]
+	}
 }
