@@ -23,6 +23,9 @@ const gridView = ref(false);
 const items = ref<DirOrFile[]>([]);
 
 onMounted(() => {
+  window.electronAPI.getSettings().then(settings => {
+    gridView.value = settings.gridView;
+  });
   loadDirectory();
 })
 

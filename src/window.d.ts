@@ -1,3 +1,5 @@
+import type UiSettings from "@shared/models/settings";
+
 declare global {
   interface Window {
     ipcRenderer: {
@@ -6,7 +8,8 @@ declare global {
     },
     electronAPI: {
       loadDirectory: (path?: string) => Promise<DirOrFile[]>
-      showSelectDirectoryDialog: () => Promise<string>
+      showSelectDirectoryDialog: () => Promise<string>,
+      getSettings: () => Promise<UiSettings>
     }
   }
 }

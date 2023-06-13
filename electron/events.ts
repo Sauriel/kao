@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import lookupDirectory from './utils/loadLibrary';
-import settings from './utils/setings';
+import settings from './utils/settings';
 
 export function addEvents(win: BrowserWindow) {
 
@@ -33,5 +33,9 @@ export function addEvents(win: BrowserWindow) {
         }
         return result.filePaths[0];
       });
+  });
+
+  ipcMain.handle('getSettings', () => {
+    return settings.ui.get();
   });
 }
