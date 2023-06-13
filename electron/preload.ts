@@ -1,7 +1,8 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  loadDirectory: () => ipcRenderer.invoke('loadDirectory')
+  loadDirectory: (path?: string) => ipcRenderer.invoke('loadDirectory', path),
+  showSelectDirectoryDialog: () => ipcRenderer.invoke('dialog:selectDirectory')
 });
 
 // Expose ipcRenderer to the client
@@ -9,7 +10,7 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   loadDirectory: () => ipcRenderer.invoke('loadDirectory'),
 
   send: (channel: string, ...args: any[]) => {
-    let validChannels = [
+    let validChannels: string[] = [
       'onAppMinimize',
       'onAppMaximize',
       'onAppClose'
@@ -20,7 +21,7 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   },
 
   receive: (channel: string, func: (...args: any[]) => void) => {
-    let validChannels = [] // <-- Array of all ipcMain Channels used in the electron
+    let validChannels: string[] = [] // <-- Array of all ipcMain Channels used in the electron
     if (validChannels.includes(channel)) {
       // Deliberately strip event as it includes `sender`
       ipcRenderer.on(channel, (event, ...args) => func(args))

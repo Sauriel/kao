@@ -81,7 +81,8 @@ async function lookupDirectory(path: string): Promise<DirOrFile[]> {
   return fs.readdir(path, { withFileTypes: true })
     .then(result => result.filter(filterFiles)
       .sort(getSorting(''))
-      .map(value => convertDirContent(value, path + '\\' + value.name)));
+      .map(value => convertDirContent(value, path + '\\' + value.name)))
+    .catch(e => []);
 }
 
 export default lookupDirectory;

@@ -1,5 +1,6 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import lookupDirectory from './utils/loadLibrary';
+import settings from './utils/setings';
 
 export function addEvents(win: BrowserWindow) {
 
@@ -19,8 +20,18 @@ export function addEvents(win: BrowserWindow) {
     app.quit();
   });
 
-  ipcMain.handle('loadDirectory', () => {
-    const path = 'G:\\Andere Computer\\Mein Computer\\Google Drive Avatare';
-    return lookupDirectory(path);
+  ipcMain.handle('loadDirectory', (event, path: string | undefined) => {
+    settings.library.path.set(path);
+    return lookupDirectory(settings.library.path.get());
+  });
+
+  ipcMain.handle('dialog:selectDirectory', () => {
+    return dialog.showOpenDialog({ properties: ['openDirectory'] })
+      .then(result => {
+        if (result.canceled || result.filePaths.length === 0) {
+          throw new Error('No valid directory selected.');
+        }
+        return result.filePaths[0];
+      });
   });
 }
