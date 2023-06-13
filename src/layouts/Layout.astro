@@ -1,5 +1,5 @@
 ---
-import '../styles/global.css';
+import '@styles/global.css';
 import { Icon } from 'astro-icon';
 
 export interface Props {
@@ -22,10 +22,18 @@ const { title } = Astro.props;
 	<body>
 		<div id="layout">
 			<header>
+				<div class="actions">
+					<a href="/">
+						<Icon name="mdi:home-circle" />
+					</a>
+					<a href="/settings">
+						<Icon name="mdi:cog" />
+					</a>
+				</div>
 				<div id="drag-zone">
 					<h1>Kao - Der Avatar Browser</h1>
 				</div>
-				<div id="actions">
+				<div class="actions">
 					<button id="minimize">
 						<Icon name="mdi:window-minimize" />
 					</button>
@@ -71,16 +79,17 @@ header {
 	display: flex;
 	padding: var(--layout-gap);
 	align-items: center;
+	justify-content: center;
 }
 
 h1 {
 	font-size: 1rem;
 }
 
-#actions {
+.actions {
 	display: flex;
 	gap: var(--layout-gap);
-	padding-right: var(--layout-gap);
+	padding: 0 var(--layout-gap);
 }
 
 button:hover {

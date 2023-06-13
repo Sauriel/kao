@@ -1,30 +1,37 @@
 <template>
   <ul>
-    <li v-for="(item, index) of items" :key="index">
-      <Image
-        :image="item.cover"
-        :unknown-type="item.type === 'unknown'"
-        class="cover"
-      />
-      <header>{{ item.name }}</header>
-    </li>
+    <FlexItem
+      v-for="(item, index) of items"
+      :key="index"
+      :item="item"
+      :aspect-ratio="aspectRatio"
+      @open:directory="onOpenDirectory"
+    />
   </ul>
 </template>
 
 <script setup lang="ts">
-import type DirOrFile from '../../../shared/models/files';
-import Image from './image.vue';
+import { ref } from 'vue';
+import type DirOrFile from '@shared/models/files';
+import type { Directory } from '@shared/models/files';
+import FlexItem from '@components/library/flexItem.vue';
 
 type Props = {
   items: DirOrFile[];
 }
 
-// type Emits = {
-//   (e: 'update', payload: string): void;
-// }
+type Emits = {
+  (e: 'open:directory', directory: Directory): void;
+}
 
 const props = defineProps<Props>();
-// const emit = defineEmits<Emits>();
+const emit = defineEmits<Emits>();
+
+const aspectRatio = ref(3 / 4);
+
+function onOpenDirectory(directory: Directory) {
+  console.log(`open ${directory.path}`);
+}
 </script>
 
 <style scoped>
@@ -32,15 +39,5 @@ ul {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-}
-
-li {
-  flex: 0 1 auto;
-  width: 20%;
-}
-
-img {
-  width: 100%;
-  height: auto;
 }
 </style>

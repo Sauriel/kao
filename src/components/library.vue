@@ -15,9 +15,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import type DirOrFile from '../../shared/models/files';
-import Flex from './library/flex.vue';
-import Grid from './library/grid.vue';
+import type DirOrFile from '@shared/models/files';
+import Flex from '@components/library/flex.vue';
+import Grid from '@components/library/grid.vue';
 
 const gridView = ref(false);
 const items = ref<DirOrFile[]>([]);

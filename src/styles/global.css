@@ -47,8 +47,13 @@ body {
 }
 
 a {
+  color: var(--color-font);
   text-decoration: none;
   display: inline-block;
+}
+
+a:hover {
+  color: var(--color-font--dark);
 }
 
 a:focus {

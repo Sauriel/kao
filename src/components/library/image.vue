@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import type { File } from '../../../shared/models/files';
+import type { File } from '@shared/models/files';
 
 type Props = {
   image?: File;

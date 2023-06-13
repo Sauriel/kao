@@ -1,7 +1,7 @@
 import * as fs from 'fs/promises';
 import * as fsSync from 'fs';
-import type DirOrFile from '../../shared/models/files';
-import type { Directory, File } from '../../shared/models/files';
+import type DirOrFile from '@shared/models/files';
+import type { Directory, File } from '@shared/models/files';
 import type { Dirent } from 'fs';
 import { sortAlpha } from './sorting';
 

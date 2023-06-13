@@ -1,10 +1,6 @@
 <template>
   <li @click="onClick">
-    <Image
-      :image="item.cover"
-      :unknown-type="item.type === 'unknown'"
-      class="cover"
-    />
+    <Image :image="item.cover" :unknown-type="item.type === 'unknown'" class="cover" />
     <h3>{{ item.name }}</h3>
   </li>
 </template>
@@ -35,9 +31,8 @@ function onClick() {
 
 <style scoped>
 li {
-  transform-origin: center;
-  transition: var(--animation);
-  background-color: var(--color-warning);
+  flex: 0 1 auto;
+  width: 200px;
   cursor: pointer;
   display: grid;
   grid-template-areas: "content";
@@ -46,12 +41,17 @@ li {
   justify-content: center;
   overflow: hidden;
   aspect-ratio: v-bind(aspectRatio);
+  background-color: var(--color-warning);
+  transition: var(--animation);
+  border: 1px solid var(--color-background--light);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  /* hack to keep the backdrop-filter to "fall through" */
+  -webkit-filter: blur(0px);
 }
 
 li:hover {
-  scale: 1.2;
-  box-shadow: 4px 4px 8px var(--color-background--dark);
-  z-index: 99;
+  border-color: var(--color-font);
 }
 
 h3 {
@@ -63,14 +63,7 @@ h3 {
   background-color: var(--blur-color);
   backdrop-filter: var(--blur);
   text-align: center;
-  position: relative;
-  bottom: -100%;
-  transition: var(--animation);
   padding: .25em .75em;
-}
-
-li:hover > h3 {
-  bottom: 0;
 }
 
 .cover {
