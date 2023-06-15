@@ -4,7 +4,7 @@
       v-for="(item, index) of items"
       :key="index"
       :item="item"
-      :aspect-ratio="aspectRatio"
+      :aspect-ratio="$settings.previewAspectRatio"
       @open:directory="onOpenDirectory"
     />
   </ul>
@@ -15,6 +15,10 @@ import { ref } from 'vue';
 import type DirOrFile from '@shared/models/files';
 import type { Directory } from '@shared/models/files';
 import FlexItem from '@components/library/flexItem.vue';
+import { settings } from '@store/settings';
+import { useStore } from '@nanostores/vue';
+
+const $settings = useStore(settings);
 
 type Props = {
   items: DirOrFile[];
@@ -26,8 +30,6 @@ type Emits = {
 
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
-
-const aspectRatio = ref(3 / 4);
 
 function onOpenDirectory(directory: Directory) {
   console.log(`open ${directory.path}`);

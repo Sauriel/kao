@@ -1,7 +1,8 @@
 ---
 import Layout from '@layouts/Layout.astro';
+import SettingsView from '@components/settingsView.vue';
 ---
 
 <Layout title="Einstellungen">
-	<h2>SETTINGS</h2>
+	<SettingsView client:only="vue" />
 </Layout>

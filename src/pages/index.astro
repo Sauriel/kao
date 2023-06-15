@@ -1,8 +1,8 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import Library from '@components/library.vue';
+import LibraryView from '@components/libraryView.vue';
 ---
 
 <Layout title="Bibliothek">
-	<Library client:only="vue" />
+	<LibraryView client:only="vue" />
 </Layout>

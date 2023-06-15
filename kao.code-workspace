@@ -7,6 +7,9 @@
 	"settings": {
 		"cssCustomProperties.files": [
 			"./src/styles/global.css"
+		],
+		"cSpell.words": [
+			"nanostores"
 		]
 	}
 }
