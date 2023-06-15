@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import lookupDirectory from './utils/loadLibrary';
 import settings from './utils/settings';
+import type UiSettings from '../shared/models/settings';
 
 export function addEvents(win: BrowserWindow) {
 
@@ -37,5 +38,10 @@ export function addEvents(win: BrowserWindow) {
 
   ipcMain.handle('getSettings', () => {
     return settings.ui.get();
+  });
+
+  ipcMain.on('setSettings', (event, arg: any[]) => {
+    const value = arg[0] as UiSettings;
+    settings.ui.set(value);
   });
 }

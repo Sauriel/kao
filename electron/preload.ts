@@ -14,7 +14,8 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
     let validChannels: string[] = [
       'onAppMinimize',
       'onAppMaximize',
-      'onAppClose'
+      'onAppClose',
+      'setSettings'
     ] // <-- Array of all ipcRenderer Channels used in the client
     if (validChannels.includes(channel)) {
       ipcRenderer.send(channel, args)

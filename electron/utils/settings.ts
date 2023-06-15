@@ -18,7 +18,8 @@ function setLibraryPath(path?: string) {
 }
 
 function getUiSettings(): UiSettings {
-  return store.get(UI_SETTINGS, DEFAULT_SETTINGS) as UiSettings;
+  const settings = store.get(UI_SETTINGS, DEFAULT_SETTINGS) as UiSettings
+  return settings;
 }
 
 function setUiSettings(settings: Partial<UiSettings>) {
