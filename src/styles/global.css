@@ -128,3 +128,9 @@ body {
   background-color: var(--color-font);
   color: var(--color-background);
 }
+
+input[type="checkbox"] {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
