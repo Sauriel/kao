@@ -68,5 +68,6 @@ h3 {
 
 .cover {
   grid-area: content;
+  aspect-ratio: v-bind(aspectRatio);
 }
 </style>

@@ -7,9 +7,10 @@ declare global {
       receive: (channel: string, func: (...args: any[]) => void) => void
     },
     electronAPI: {
-      loadDirectory: (path?: string) => Promise<DirOrFile[]>
+      loadDirectory: () => Promise<DirOrFile[]>
       showSelectDirectoryDialog: () => Promise<string>,
-      getSettings: () => Promise<UiSettings>
+      getSettings: () => Promise<UiSettings>,
+      getLibraryPath: () => Promise<string>
     }
   }
 }

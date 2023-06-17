@@ -21,8 +21,7 @@ export function addEvents(win: BrowserWindow) {
     app.quit();
   });
 
-  ipcMain.handle('loadDirectory', (event, path: string | undefined) => {
-    settings.library.path.set(path);
+  ipcMain.handle('loadDirectory', () => {
     return lookupDirectory(settings.library.path.get());
   });
 
@@ -32,12 +31,18 @@ export function addEvents(win: BrowserWindow) {
         if (result.canceled || result.filePaths.length === 0) {
           throw new Error('No valid directory selected.');
         }
-        return result.filePaths[0];
+        const path = result.filePaths[0];
+        settings.library.path.set(path);
+        return path;
       });
   });
 
   ipcMain.handle('getSettings', () => {
     return settings.ui.get();
+  });
+
+  ipcMain.handle('getLibraryPath', () => {
+    return settings.library.path.get();
   });
 
   ipcMain.on('setSettings', (event, arg: any[]) => {

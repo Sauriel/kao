@@ -1,9 +1,10 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  loadDirectory: (path?: string) => ipcRenderer.invoke('loadDirectory', path),
+  loadDirectory: () => ipcRenderer.invoke('loadDirectory'),
   showSelectDirectoryDialog: () => ipcRenderer.invoke('dialog:selectDirectory'),
-  getSettings: () => ipcRenderer.invoke('getSettings')
+  getSettings: () => ipcRenderer.invoke('getSettings'),
+  getLibraryPath: () => ipcRenderer.invoke('getLibraryPath')
 });
 
 // Expose ipcRenderer to the client

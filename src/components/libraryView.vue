@@ -4,11 +4,14 @@
       <Grid v-if="$settings.gridView" :items="items" />
       <Flex v-else :items="items" />
     </section>
-    <section v-else id="select-directory">
+    <section v-else-if="!noLibrarySelected" id="info">
+      <h2>Loading ...</h2>
+    </section>
+    <section v-else id="info">
       <h2>
         Es konnten keine Dateien gefunden werden. Bitte wähle einen Ordner aus.
       </h2>
-      <button class="btn" @click="onSelectDirectoryClick">Ordner auswählen</button>
+      <LibrarySelector @library-selected="loadDirectory"/>
     </section>
   </div>
 </template>
@@ -18,39 +21,39 @@ import { ref, onMounted } from 'vue';
 import type DirOrFile from '@shared/models/files';
 import Flex from '@components/library/flex.vue';
 import Grid from '@components/library/grid.vue';
+import LibrarySelector from '@components/librarySelector.vue';
 import { settings } from '@store/settings';
 import { useStore } from '@nanostores/vue';
 
 const $settings = useStore(settings);
 
 const items = ref<DirOrFile[]>([]);
+const noLibrarySelected = ref(false);
 
 onMounted(() => {
-  loadDirectory();
+  window.electronAPI.getLibraryPath().then(path => {
+    if (path && path.trim() !== '') {
+      loadDirectory();
+    } else {
+      noLibrarySelected.value = true;
+    }
+  })
 })
 
-function loadDirectory(path?: string) {
+function loadDirectory() {
   window.electronAPI
-    .loadDirectory(path)
+    .loadDirectory()
     .then((result) => items.value = result);
-}
-
-function onSelectDirectoryClick() {
-  window.electronAPI.showSelectDirectoryDialog()
-    .then(loadDirectory)
-    .catch(e => {
-      console.error(e);
-    });
 }
 </script>
 
 <style scoped>
 #library,
-#select-directory {
+#info {
   height: 100%;
 }
 
-#select-directory {
+#info {
   display: flex;
   flex-direction: column;
   justify-content: center;

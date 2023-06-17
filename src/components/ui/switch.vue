@@ -1,13 +1,17 @@
 <template>
   <label>
-    <slot name="off" />
+    <span>
+      <slot name="off" />
+    </span>
     <span class="switch">
       <input
       type="checkbox"
       v-model="data"
       />
     </span>
-    <slot name="on" />
+    <span>
+      <slot name="on" />
+    </span>
   </label>
 </template>
 
@@ -38,12 +42,12 @@ label {
   user-select: none;
 }
 
-label:first-child {
+label > span:first-child {
   grid-area: off;
   justify-self: flex-end;
 }
 
-label:last-child {
+label > span:last-child {
   grid-area: on;
   justify-self: flex-start;
 }
