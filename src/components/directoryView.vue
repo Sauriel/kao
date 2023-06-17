@@ -1,7 +1,9 @@
 <template>
   <div>
     <header>
-      <button @click="onBackClick">BACK</button>
+      <button @click="onBackClick">
+        <Icon icon="mdi:chevron-left" />
+      </button>
       <h2>{{ name }}</h2>
     </header>
     <section v-if="items.length > 0">
@@ -17,13 +19,14 @@
       />
     </section>
     <section v-else>
-      empty directory
+      Dieser Ordner ist leer.
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { Icon } from '@iconify/vue';
 import Flex from '@components/library/flex.vue';
 import Grid from '@components/library/grid.vue';
 import type DirOrFile from '@shared/models/files';
@@ -74,5 +77,22 @@ function onBackClick() {
 </script>
 
 <style scoped>
-/* ToDo: Add style content */
+header {
+  display: grid;
+  grid-template-areas: "actions header";
+  grid-template-columns: auto 1fr;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+header > button {
+  grid-area: actions;
+}
+
+header > h2 {
+  grid-area: header;
+  text-align: center;
+}
 </style>
