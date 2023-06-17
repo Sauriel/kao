@@ -32,7 +32,7 @@ const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 function onOpenDirectory(directory: Directory) {
-  console.log(`open ${directory.path}`);
+  emit('open:directory', directory);
 }
 </script>
 
@@ -40,5 +40,6 @@ function onOpenDirectory(directory: Directory) {
 ul {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  padding-bottom: 1rem;
 }
 </style>

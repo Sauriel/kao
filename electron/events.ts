@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron';
 import lookupDirectory from './utils/loadLibrary';
 import settings from './utils/settings';
 import type UiSettings from '../shared/models/settings';
@@ -21,8 +21,8 @@ export function addEvents(win: BrowserWindow) {
     app.quit();
   });
 
-  ipcMain.handle('loadDirectory', () => {
-    return lookupDirectory(settings.library.path.get());
+  ipcMain.handle('loadDirectory', (event, path: string | undefined) => {
+    return lookupDirectory(path ?? settings.library.path.get());
   });
 
   ipcMain.handle('dialog:selectDirectory', () => {
@@ -48,5 +48,9 @@ export function addEvents(win: BrowserWindow) {
   ipcMain.on('setSettings', (event, arg: any[]) => {
     const value = arg[0] as UiSettings;
     settings.ui.set(value);
+  });
+
+  ipcMain.handle('showFileInOS', (event, path: string) => {
+    shell.showItemInFolder(path);
   });
 }

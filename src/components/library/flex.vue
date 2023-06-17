@@ -32,7 +32,7 @@ const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 function onOpenDirectory(directory: Directory) {
-  console.log(`open ${directory.path}`);
+  emit('open:directory', directory);
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <li @click="onClick">
     <Image
-      :image="item.cover"
+      :image="image"
       :unknown-type="item.type === 'unknown'"
       class="cover"
     />
@@ -11,8 +11,9 @@
 
 <script setup lang="ts">
 import type DirOrFile from '@shared/models/files';
-import type { Directory } from '@shared/models/files';
+import type { Directory, File } from '@shared/models/files';
 import Image from '@components/library/image.vue';
+import { computed } from 'vue';
 
 type Props = {
   item: DirOrFile;
@@ -26,9 +27,20 @@ type Emits = {
 const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
+const image = computed<File | undefined>(() => {
+  if (props.item.type === 'directory') {
+    return (props.item as Directory).cover;
+  } else if (props.item.type === 'image') {
+    return props.item;
+  }
+  return undefined;
+});
+
 function onClick() {
   if (props.item.type === 'directory') {
     emit('open:directory', props.item as Directory);
+  } else {
+    window.electronAPI.showFileInOS(props.item.path);
   }
 }
 </script>

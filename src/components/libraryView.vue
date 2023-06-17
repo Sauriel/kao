@@ -1,8 +1,16 @@
 <template>
   <div id="library">
     <section v-if="items.length > 0">
-      <Grid v-if="$settings.gridView" :items="items" />
-      <Flex v-else :items="items" />
+      <Grid
+        v-if="$settings.gridView"
+        :items="items"
+        @open:directory="onDirectoryOpen"
+      />
+      <Flex
+        v-else
+        :items="items"
+        @open:directory="onDirectoryOpen"
+      />
     </section>
     <section v-else-if="!noLibrarySelected" id="info">
       <h2>Loading ...</h2>
@@ -19,6 +27,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import type DirOrFile from '@shared/models/files';
+import type { Directory } from '@shared/models/files';
 import Flex from '@components/library/flex.vue';
 import Grid from '@components/library/grid.vue';
 import LibrarySelector from '@components/librarySelector.vue';
@@ -44,6 +53,13 @@ function loadDirectory() {
   window.electronAPI
     .loadDirectory()
     .then((result) => items.value = result);
+}
+
+function onDirectoryOpen(directory: Directory) {
+  const directoryUrl = new URL('/directory', window.location.origin);
+  directoryUrl.searchParams.set('path', directory.path);
+  directoryUrl.searchParams.set('name', directory.name);
+  window.location.href = directoryUrl.href;
 }
 </script>
 
