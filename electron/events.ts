@@ -45,8 +45,7 @@ export function addEvents(win: BrowserWindow) {
     return settings.library.path.get();
   });
 
-  ipcMain.on('setSettings', (event, arg: any[]) => {
-    const value = arg[0] as UiSettings;
+  ipcMain.on('setSettings', (event, value: UiSettings) => {
     settings.ui.set(value);
   });
 

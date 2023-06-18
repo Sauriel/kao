@@ -9,6 +9,7 @@
 </template>
 
 <script setup lang="ts">
+import { ipcRenderer } from 'electron';
 import { computedAsync } from '@vueuse/core';
 
 // type Props = {
@@ -22,11 +23,22 @@ type Emits = {
 // const props = defineProps<Props>();
 const emit = defineEmits<Emits>();
 
-const path = computedAsync(async () => await window.electronAPI.getLibraryPath(), '');
+const path = ref<string>('');
+
+onMounted(() => {
+  ipcRenderer.invoke('getLibraryPath')
+    .then(result => path.value = result)
+    .catch(e => {
+      console.error(e);
+    });
+})
 
 function onSelectDirectoryClick() {
-  window.electronAPI.showSelectDirectoryDialog()
-    .then((path) => emit('librarySelected', path))
+  ipcRenderer.invoke('dialog:selectDirectory')
+    .then((result) => {
+      path.value = result;
+      emit('librarySelected', result);
+    })
     .catch(e => {
       console.error(e);
     });

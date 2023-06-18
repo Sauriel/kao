@@ -1,6 +1,6 @@
 <template>
   <li @click="onClick">
-    <Image
+    <LibraryImage
       :image="image"
       :unknown-type="item.type === 'unknown'"
       class="cover"
@@ -10,10 +10,9 @@
 </template>
 
 <script setup lang="ts">
-import type DirOrFile from '@shared/models/files';
-import type { Directory, File } from '@shared/models/files';
-import Image from '@components/library/image.vue';
-import { computed } from 'vue';
+import { ipcRenderer } from 'electron';
+import type DirOrFile from '@/shared/models/files';
+import type { Directory, File } from '@/shared/models/files';
 
 type Props = {
   item: DirOrFile;
@@ -40,7 +39,7 @@ function onClick() {
   if (props.item.type === 'directory') {
     emit('open:directory', props.item as Directory);
   } else {
-    window.electronAPI.showFileInOS(props.item.path);
+    ipcRenderer.invoke('showFileInOS', props.item.path);
   }
 }
 </script>

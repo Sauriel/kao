@@ -1,12 +1,12 @@
 <template>
   <div id="library">
     <section v-if="items.length > 0">
-      <Grid
-        v-if="$settings.gridView"
+      <LibraryGrid
+        v-if="settingsStore.gridView"
         :items="items"
         @open:directory="onDirectoryOpen"
       />
-      <Flex
+      <LibraryFlex
         v-else
         :items="items"
         @open:directory="onDirectoryOpen"
@@ -25,41 +25,36 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import type DirOrFile from '@shared/models/files';
-import type { Directory } from '@shared/models/files';
-import Flex from '@components/library/flex.vue';
-import Grid from '@components/library/grid.vue';
-import LibrarySelector from '@components/librarySelector.vue';
-import { settings } from '@store/settings';
-import { useStore } from '@nanostores/vue';
+import { ipcRenderer } from 'electron';
+import { useSettingsStore } from '@/stores/settings';
+import { useLibraryStore } from '@/stores/library';
+import type DirOrFile from '@/shared/models/files';
+import type { Directory } from '@/shared/models/files';
 
-const $settings = useStore(settings);
+const settingsStore = useSettingsStore();
+const libraryStore = useLibraryStore();
 
 const items = ref<DirOrFile[]>([]);
 const noLibrarySelected = ref(false);
 
 onMounted(() => {
-  window.electronAPI.getLibraryPath().then(path => {
-    if (path && path.trim() !== '') {
-      loadDirectory();
-    } else {
-      noLibrarySelected.value = true;
-    }
-  })
+  ipcRenderer.invoke('getLibraryPath')
+    .then(path => {
+      if (path && path.trim() !== '') {
+        loadDirectory();
+      } else {
+        noLibrarySelected.value = true;
+      }
+    })
 })
 
 function loadDirectory() {
-  window.electronAPI
-    .loadDirectory()
+  ipcRenderer.invoke('loadDirectory')
     .then((result) => items.value = result);
 }
 
 function onDirectoryOpen(directory: Directory) {
-  const directoryUrl = new URL('/directory', window.location.origin);
-  directoryUrl.searchParams.set('path', directory.path);
-  directoryUrl.searchParams.set('name', directory.name);
-  window.location.href = directoryUrl.href;
+  libraryStore.openDirectory(directory);
 }
 </script>
 

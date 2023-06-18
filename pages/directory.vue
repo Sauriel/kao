@@ -2,17 +2,17 @@
   <div>
     <header>
       <button @click="onBackClick">
-        <Icon icon="mdi:chevron-left" />
+        <Icon name="mdi:chevron-left" />
       </button>
       <h2>{{ name }}</h2>
     </header>
     <section v-if="items.length > 0">
-      <Grid
-        v-if="$settings.gridView"
+      <LibraryGrid
+        v-if="settingsStore.gridView"
         :items="items"
         @open:directory="onDirectoryOpen"
       />
-      <Flex
+      <LibraryFlex
         v-else
         :items="items"
         @open:directory="onDirectoryOpen"
@@ -25,19 +25,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { Icon } from '@iconify/vue';
-import Flex from '@components/library/flex.vue';
-import Grid from '@components/library/grid.vue';
-import type DirOrFile from '@shared/models/files';
-import type { Directory } from '@shared/models/files';
-import { settings } from '@store/settings';
-import { useStore } from '@nanostores/vue';
+import { ipcRenderer } from 'electron';
+import { useSettingsStore } from '@/stores/settings';
+import { useLibraryStore } from '@/stores/library';
+import type DirOrFile from '@/shared/models/files';
+import type { Directory } from '@/shared/models/files';
 
-const $settings = useStore(settings);
-
-const items = ref<DirOrFile[]>([]);
-const name = ref<string>('');
+const settingsStore = useSettingsStore();
+const libraryStore = useLibraryStore();
 
 // type Props = {
 //   value: string;
@@ -50,25 +45,23 @@ const name = ref<string>('');
 // const props = defineProps<Props>();
 // const emit = defineEmits<Emits>();
 
+const items = ref<DirOrFile[]>([]);
+const name = ref<string>('');
+
 onMounted(() => {
-  const params = new URLSearchParams(window.location.search);
-  const path = params.get('path');
-  const directoryName = params.get('name');
+  const path = libraryStore.path;
+  const directoryName = libraryStore.name;
   if (directoryName) {
     name.value = directoryName;
   }
   if (path) {
-    window.electronAPI
-      .loadDirectory(path)
+    ipcRenderer.invoke('loadDirectory', path)
       .then((result) => items.value = result);
   }
 })
 
 function onDirectoryOpen(directory: Directory) {
-  const directoryUrl = new URL('/directory', window.location.origin);
-  directoryUrl.searchParams.set('path', directory.path);
-  directoryUrl.searchParams.set('name', directory.name);
-  window.location.href = directoryUrl.href;
+  libraryStore.openDirectory(directory);
 }
 
 function onBackClick() {
