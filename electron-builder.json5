@@ -2,7 +2,7 @@
  * @see https://www.electron.build/configuration/configuration
  */
 {
-  "appId": "your.app.id",
+  "appId": "net.sauriel.kao",
   "asar": false,
   "directories": {
     "output": "release/${version}"
@@ -12,12 +12,14 @@
     "dist-electron"
   ],
   "mac": {
+    "icon": "build/icon.icns",
     "artifactName": "${productName}_${version}.${ext}",
     "target": [
       "dmg"
     ]
   },
   "win": {
+    "icon": "build/icon.ico",
     "target": [
       {
         "target": "nsis",
