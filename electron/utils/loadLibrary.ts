@@ -1,9 +1,11 @@
+import * as pathUtil from 'path';
 import * as fs from 'fs/promises';
 import * as fsSync from 'fs';
 import type DirOrFile from '../../shared/models/files';
 import type { Directory, File } from '../../shared/models/files';
 import type { Dirent } from 'fs';
 import { sortAlpha } from './sorting';
+import saveInDB from './libraryDatabase';
 
 const ALLOWED_IMAGE_EXTENSIONS: string[] = ['png', 'jpg', 'jpeg', 'webp', 'gif', 'svg'];
 const FILE_BLACKLIST: RegExp[] = [
@@ -29,7 +31,7 @@ function createDirectory(name: string, path: string): Directory {
     .filter(filterFiles)
     .find(isCoverImage);
   if (cover) {
-    dir.cover = createFile(cover.name, path + '\\' + cover.name);
+    dir.cover = createFile(cover.name, pathUtil.join(path, cover.name));
   }
 
   return dir;
@@ -81,7 +83,11 @@ async function lookupDirectory(path: string): Promise<DirOrFile[]> {
   return fs.readdir(path, { withFileTypes: true })
     .then(result => result.filter(filterFiles)
       .sort(getSorting(''))
-      .map(value => convertDirContent(value, path + '\\' + value.name)))
+      .map(value => convertDirContent(value, pathUtil.join(path, value.name))))
+    .then(dirsAndFiles => {
+      saveInDB(dirsAndFiles);
+      return dirsAndFiles;
+    })
     .catch(e => []);
 }
 

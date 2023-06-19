@@ -1,17 +1,13 @@
 import Store from 'electron-store';
 import type UiSettings from '../../shared/models/settings';
 import { DEFAULT_SETTINGS } from '../../shared/models/settings';
-import DB, { DbDoc } from './database';
+import DB, { LibraryDBEntry } from './database';
 
 const store = new Store<Record<string, string | UiSettings>>();
 
 const PATH = 'library.path';
 const UI_SETTINGS = 'ui.settings';
-
-declare type SettingsDBEntry = DbDoc & {
-  _id: 'library-path'
-  path: string;
-}
+const PATH_DB_ID = 'library-path';
 
 function getLibraryPath(): string {
   return store.get(PATH) as string;
@@ -20,10 +16,14 @@ function getLibraryPath(): string {
 function setLibraryPath(path?: string) {
   if (path) {
     store.set(PATH, path);
-    DB.insertOrUpdate<SettingsDBEntry>({ _id: 'library-path' }, { _id: 'library-path', path })
-      .catch(error => {
-        console.error(error);
-      });
+    DB.update<LibraryDBEntry>(
+      { _id: PATH_DB_ID },
+      { _id: PATH_DB_ID, path },
+      { upsert: true }
+    )
+    .catch(error => {
+      console.error(error);
+    });
   }
 }
 
