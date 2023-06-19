@@ -5,7 +5,7 @@ import type DirOrFile from '../../shared/models/files';
 import type { Directory, File } from '../../shared/models/files';
 import type { Dirent } from 'fs';
 import { sortAlpha } from './sorting';
-import saveInDB from './libraryDatabase';
+import { runInNewThread } from './threads';
 
 const ALLOWED_IMAGE_EXTENSIONS: string[] = ['png', 'jpg', 'jpeg', 'webp', 'gif', 'svg'];
 const FILE_BLACKLIST: RegExp[] = [
@@ -85,7 +85,14 @@ async function lookupDirectory(path: string): Promise<DirOrFile[]> {
       .sort(getSorting(''))
       .map(value => convertDirContent(value, pathUtil.join(path, value.name))))
     .then(dirsAndFiles => {
-      saveInDB(dirsAndFiles);
+      // saveInDB(dirsAndFiles);
+      runInNewThread('./dist-electron/libraryScanner.js', path)
+        .then((result) => {
+          console.log('Result:', result);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
       return dirsAndFiles;
     })
     .catch(e => []);
