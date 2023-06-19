@@ -22,7 +22,11 @@ export function addEvents(win: BrowserWindow) {
   });
 
   ipcMain.handle('loadDirectory', (event, path: string | undefined) => {
-    return lookupDirectory(path ?? settings.library.path.get());
+    let directoryPath = path;
+    if (!directoryPath || directoryPath.trim() === '') {
+      directoryPath = settings.library.path.get();
+    }
+    return lookupDirectory(directoryPath);
   });
 
   ipcMain.handle('dialog:selectDirectory', () => {

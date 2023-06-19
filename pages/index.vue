@@ -1,60 +1,29 @@
 <template>
   <div id="library">
-    <section v-if="items.length > 0">
-      <LibraryGrid
-        v-if="settingsStore.gridView"
-        :items="items"
-        @open:directory="onDirectoryOpen"
-      />
-      <LibraryFlex
-        v-else
-        :items="items"
-        @open:directory="onDirectoryOpen"
-      />
-    </section>
-    <section v-else-if="!noLibrarySelected" id="info">
-      <h2>Loading ...</h2>
-    </section>
-    <section v-else id="info">
+    <Library :path="path">
       <h2>
         Es konnten keine Dateien gefunden werden. Bitte wähle einen Ordner aus.
       </h2>
-      <LibrarySelector @library-selected="loadDirectory"/>
-    </section>
+      <LibrarySelector @library-selected="onLibrarySelected"/>
+    </Library>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ipcRenderer } from 'electron';
-import { useSettingsStore } from '@/stores/settings';
-import { useLibraryStore } from '@/stores/library';
-import type DirOrFile from '@/shared/models/files';
-import type { Directory } from '@/shared/models/files';
-
-const settingsStore = useSettingsStore();
-const libraryStore = useLibraryStore();
-
-const items = ref<DirOrFile[]>([]);
-const noLibrarySelected = ref(false);
+const path = ref('');
 
 onMounted(() => {
   ipcRenderer.invoke('getLibraryPath')
-    .then(path => {
-      if (path && path.trim() !== '') {
-        loadDirectory();
-      } else {
-        noLibrarySelected.value = true;
+    .then(result => {
+      if (result && result.trim() !== '') {
+        path.value = result;
       }
     })
 })
 
-function loadDirectory() {
-  ipcRenderer.invoke('loadDirectory')
-    .then((result) => items.value = result);
-}
-
-function onDirectoryOpen(directory: Directory) {
-  libraryStore.openDirectory(directory);
+function onLibrarySelected(libraryPath: string) {
+  path.value = libraryPath;
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
-  <div id="layout">
-      <header>
-        <div class="actions">
+  <div :class="$style.layout">
+      <header :class="$style.header">
+        <div :class="$style.actions">
           <NuxtLink to="/">
             <Icon name="mdi:home-circle" />
           </NuxtLink>
@@ -12,22 +12,22 @@
             <Icon name="mdi:clipboard-alert-outline" />
           </NuxtLink>
         </div>
-        <div id="drag-zone">
-          <h1>Kao - Der Avatar Browser</h1>
+        <div :class="$style.dragZone">
+          <h1 :class="$style.h1">Kao - Der Avatar Browser</h1>
         </div>
-        <div class="actions">
-          <button @click="onMinimizeClick">
+        <div :class="$style.actions">
+          <button :class="$style.button" @click="onMinimizeClick">
             <Icon name="mdi:window-minimize" />
           </button>
-          <button @click="onMaximizeClick">
+          <button :class="$style.button" @click="onMaximizeClick">
             <Icon name="mdi:window-maximize" />
           </button>
-          <button @click="onCloseClick">
+          <button :class="$style.button" @click="onCloseClick">
             <Icon name="mdi:close" />
           </button>
         </div>
       </header>
-      <main>
+      <main :class="$style.main">
         <slot />
       </main>
     </div>
@@ -49,8 +49,8 @@ function onCloseClick() {
 }
 </script>
 
-<style scoped>
-#layout {
+<style module>
+.layout {
   background-color: var(--color-background);
   border-radius: var(--border-radius);
   border: 1px solid var(--color-background--light);
@@ -63,13 +63,13 @@ function onCloseClick() {
   --layout-gap: .5rem;
 }
 
-header {
+.header {
   display: flex;
   font-size: 1.5rem;
   background-color: var(--color-background--dark);
 }
 
-#drag-zone {
+.dragZone {
   flex: 1 0 auto;
   -webkit-user-select: none;
   -webkit-app-region: drag;
@@ -79,7 +79,7 @@ header {
   justify-content: center;
 }
 
-h1 {
+.h1 {
   font-size: 1rem;
 }
 
@@ -87,13 +87,19 @@ h1 {
   display: flex;
   gap: var(--layout-gap);
   padding: 0 var(--layout-gap);
+  align-items: center;
 }
 
-button:hover {
+.actions > a {
+  display: flex;
+  justify-content: center;
+}
+
+.button:hover {
   color: var(--color-font--dark);
 }
 
-main {
+.main {
   overflow-y: auto;
   padding: var(--layout-gap);
   margin: var(--layout-gap);
