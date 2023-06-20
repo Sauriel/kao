@@ -24,9 +24,10 @@ export function addEvents(win: BrowserWindow) {
   ipcMain.handle('loadDirectory', (event, path: string | undefined) => {
     let directoryPath = path;
     if (!directoryPath || directoryPath.trim() === '') {
-      directoryPath = settings.library.path.get();
+      return lookupDirectory(settings.library.path.get(), true);
+    } else {
+      return lookupDirectory(directoryPath);
     }
-    return lookupDirectory(directoryPath);
   });
 
   ipcMain.handle('dialog:selectDirectory', () => {

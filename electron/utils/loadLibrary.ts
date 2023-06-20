@@ -79,14 +79,15 @@ function getSorting(type: string): (a: Dirent, b: Dirent) => number {
   return sortAlpha;
 }
 
-async function lookupDirectory(path: string): Promise<DirOrFile[]> {
+async function lookupDirectory(path: string, persist?: boolean): Promise<DirOrFile[]> {
   return fs.readdir(path, { withFileTypes: true })
     .then(result => result.filter(filterFiles)
       .sort(getSorting(''))
       .map(value => convertDirContent(value, pathUtil.join(path, value.name))))
     .then(dirsAndFiles => {
-      console.time('loading library in db');
-      runInNewThread('./dist-electron/libraryScanner.js', path)
+      if (persist) {
+        console.time('loading library in db');
+        runInNewThread('./dist-electron/libraryScanner.js', path)
         .then((result) => {
           console.timeEnd('loading library in db');
           console.log(result);
@@ -94,6 +95,7 @@ async function lookupDirectory(path: string): Promise<DirOrFile[]> {
         .catch((error) => {
           console.error('Error:', error);
         });
+      }
       return dirsAndFiles;
     })
     .catch(e => []);

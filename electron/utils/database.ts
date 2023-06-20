@@ -12,7 +12,7 @@ declare type LibraryDBEntry = {
 }
 
 const DB = Nedb.create({
-  filename: path.join(os.homedir(), 'kao', 'library', 'avatars.db'),
+  // filename: path.join(os.homedir(), 'kao', 'library', 'avatars.db'),
   autoload: true
 });
 
