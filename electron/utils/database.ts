@@ -18,6 +18,9 @@ const DB = Nedb.create({
 
 DB.ensureIndex({ fieldName: 'path', unique: true });
 DB.ensureIndex({ fieldName: 'name' });
+DB.ensureIndex({ fieldName: 'info.Serie' });
+DB.ensureIndex({ fieldName: 'info.Haarfarbe' });
+DB.ensureIndex({ fieldName: 'info.Geschlecht' });
 
 export default DB;
 

@@ -85,10 +85,11 @@ async function lookupDirectory(path: string): Promise<DirOrFile[]> {
       .sort(getSorting(''))
       .map(value => convertDirContent(value, pathUtil.join(path, value.name))))
     .then(dirsAndFiles => {
-      // saveInDB(dirsAndFiles);
+      console.time('loading library in db');
       runInNewThread('./dist-electron/libraryScanner.js', path)
         .then((result) => {
-          console.log('Result:', result);
+          console.timeEnd('loading library in db');
+          console.log(result);
         })
         .catch((error) => {
           console.error('Error:', error);

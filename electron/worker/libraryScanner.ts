@@ -2,13 +2,13 @@ import scanDirectoryAndPersist from "../utils/libraryDatabase";
 
 const { parentPort } = require('worker_threads');
 
-parentPort.on('message', (message: string) => {
+parentPort.on('message', (rootPath: string) => {
 
-  scanDirectoryAndPersist(message)
-    .then(() => {
-      parentPort.postMessage('Task completed!');
+  scanDirectoryAndPersist(rootPath)
+    .then((message) => {
+      parentPort.postMessage(message);
     })
     .catch(err => {
-      parentPort.postMessage('Task failed! ' + err);
+      parentPort.postMessage(err);
     });
 });
