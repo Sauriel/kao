@@ -1,5 +1,5 @@
 <template>
-  <section v-if="path && items.length > 0">
+  <section v-if="hasPath && items.length > 0">
     <LibraryGrid
       v-if="settingsStore.gridView"
       :items="items"
@@ -11,16 +11,15 @@
       @open:directory="onDirectoryOpen"
     />
   </section>
-  <section v-else-if="!path" :class="$style.info">
-    <h2>Loading ...</h2>
+  <section v-else-if="!hasPath" :class="$style.info">
+    <slot />
   </section>
   <section v-else :class="$style.info">
-    <slot />
+    <h2>Loading ...</h2>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ipcRenderer } from 'electron';
 import { useSettingsStore } from '@/stores/settings';
 import { useLibraryStore } from '@/stores/library';
 import type DirOrFile from '@/shared/models/files';
@@ -30,17 +29,11 @@ const settingsStore = useSettingsStore();
 const libraryStore = useLibraryStore();
 
 type Props = {
-  path?: string;
+  items: DirOrFile[];
+  hasPath?: boolean;
 }
 
 const props = defineProps<Props>();
-
-const items = ref<DirOrFile[]>([]);
-
-onMounted(() => {
-  ipcRenderer.invoke('loadDirectory', props.path)
-    .then((result) => items.value = result);
-})
 
 function onDirectoryOpen(directory: Directory) {
   libraryStore.openDirectory(directory);

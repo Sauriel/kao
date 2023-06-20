@@ -3,6 +3,7 @@ import { Directory } from "~/shared/models/files";
 export const useLibraryStore = defineStore('library-store', () => {
   const path = ref<string>('');
   const name = ref<string>('');
+  const search = ref<string>('');
 
   function openDirectory(directory: Directory) {
     path.value = directory.path;
@@ -13,6 +14,7 @@ export const useLibraryStore = defineStore('library-store', () => {
   return {
     path,
     name,
+    search,
     openDirectory
   }
 })

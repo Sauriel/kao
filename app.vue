@@ -4,7 +4,7 @@
       <NuxtPage />
     </NuxtLayout>
     <div id="global-components">
-      <ScToastWrapper />
+      <!-- ### -->
     </div>
   </div>
 </template>

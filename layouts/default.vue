@@ -27,6 +27,9 @@
           </button>
         </div>
       </header>
+      <section :class="$style.search" v-if="isIndex">
+        <UiSearch />
+      </section>
       <main :class="$style.main">
         <slot />
       </main>
@@ -35,6 +38,10 @@
 
 <script setup>
 import { ipcRenderer } from 'electron';
+
+const route = useRoute();
+
+const isIndex = computed(() => route.name === 'index');
 
 function onMinimizeClick() {
   ipcRenderer.send('onAppMinimize');
@@ -64,9 +71,12 @@ function onCloseClick() {
 }
 
 .header {
+  position: relative;
+  grid-area: app-header;
   display: flex;
   font-size: 1.5rem;
   background-color: var(--color-background--dark);
+  z-index: 999;
 }
 
 .dragZone {
@@ -100,8 +110,66 @@ function onCloseClick() {
 }
 
 .main {
+  grid-area: app-content;
   overflow-y: auto;
   padding: var(--layout-gap);
   margin: var(--layout-gap);
+}
+
+.layout:has(.search) .header::before,
+.layout:has(.search) .header::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  height: 2px;
+  background-color: var(--color-primary);
+}
+
+.layout:has(.search) .header::before {
+  left: 0;
+  right: calc(100vw - 25vw + 28px);
+}
+
+.layout:has(.search) .header::after {
+  left: calc(100vw - 25vw + 28px);
+  right: 0;
+}
+
+.search {
+  grid-area: app-content;
+  align-self: flex-start;
+  justify-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+  height: 2rem;
+  background-color: var(--color-background--dark);
+  border-bottom: 2px solid var(--color-primary);
+  position: sticky;
+  top: 0px;
+  z-index: 99;
+  padding: 0 2rem .25rem;
+}
+
+.search::before,
+.search::after {
+  content: "";
+  position: absolute;
+  top: -26px;
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--color-background--dark);
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.search::before {
+  left: -24px;
+  rotate: 45deg;
+}
+
+.search::after {
+  right: -24px;
+  rotate: -45deg;
 }
 </style>

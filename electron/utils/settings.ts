@@ -18,7 +18,7 @@ function setLibraryPath(path?: string) {
     store.set(PATH, path);
     DB.update<LibraryDBEntry>(
       { _id: PATH_DB_ID },
-      { _id: PATH_DB_ID, path },
+      { _id: PATH_DB_ID, name: PATH_DB_ID, path },
       { upsert: true }
     )
     .catch(error => {

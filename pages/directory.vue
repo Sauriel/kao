@@ -8,7 +8,8 @@
     </header>
     <Library
       v-if="path"
-      :path="path"
+      :items="items"
+      :has-path="hasPath"
     >
       Dieser Ordner ist leer.
     </Library>
@@ -16,17 +17,24 @@
 </template>
 
 <script setup lang="ts">
+import { ipcRenderer } from 'electron';
 import { useLibraryStore } from '@/stores/library';
+import DirOrFile from '~/shared/models/files';
 
 const libraryStore = useLibraryStore();
 
 const path = ref<string>('');
 const name = ref<string>('');
+const items = ref<DirOrFile[]>([]);
+
+const hasPath = computed(() => !!path);
 
 onMounted(() => {
   const directoryPath = libraryStore.path;
   if (path) {
     path.value = directoryPath;
+    ipcRenderer.invoke('loadDirectory', directoryPath)
+      .then((result) => items.value = result);
   }
   const directoryName = libraryStore.name;
   if (directoryName) {

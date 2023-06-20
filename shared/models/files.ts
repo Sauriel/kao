@@ -1,4 +1,4 @@
-declare type FileType = 'directory' | 'image' | 'unknown';
+declare type FileType = 'directory' | 'image' | 'file' | 'unknown';
 
 declare type File = {
   type: FileType;
@@ -15,6 +15,7 @@ declare type DirOrFile = Directory | File;
 export default DirOrFile;
 
 export type {
+  FileType,
   File,
   Directory
 }

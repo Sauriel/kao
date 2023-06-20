@@ -42,6 +42,7 @@ async function handleDirectory(path: string, dir: Dirent, importInfo: ImportInfo
   const directoryPath = pathUtil.join(path, dir.name);
   const libraryFolder: LibraryDBEntry = {
     name: dir.name,
+    type: 'directory',
     path: directoryPath
   };
   const files: string[] = [];
@@ -80,10 +81,11 @@ async function persist(path: string, dirent: Dirent, importInfo: ImportInfo): Pr
   if (dirent.isDirectory()) {
     return handleDirectory(path, dirent, importInfo);
   } else {
-    const filePath = pathUtil.join(path, dirent.name);
+    // const filePath = pathUtil.join(path, dirent.name);
     const libraryFile: LibraryDBEntry = {
       name: dirent.name,
-      path: filePath
+      type: 'file',
+      path: dirent.name
     };
     importInfo.countFile();
     return Promise.resolve(libraryFile);
