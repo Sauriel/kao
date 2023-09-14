@@ -1,46 +1,18 @@
 <template>
-  <div>
-    <header>
-      <button @click="onBackClick">
-        <Icon name="mdi:chevron-left" />
-      </button>
-      <h2>{{ name }}</h2>
-    </header>
-    <Library
-      v-if="path"
-      :items="items"
-      :has-path="hasPath"
-    >
-      Dieser Ordner ist leer.
-    </Library>
-  </div>
+  <DirectoryView
+    :name="name"
+    :path="path"
+    @close="onBackClick"
+  />
 </template>
 
 <script setup lang="ts">
-import { ipcRenderer } from 'electron';
 import { useLibraryStore } from '@/stores/library';
-import DirOrFile from '~/shared/models/files';
 
 const libraryStore = useLibraryStore();
 
-const path = ref<string>('');
-const name = ref<string>('');
-const items = ref<DirOrFile[]>([]);
-
-const hasPath = computed(() => !!path);
-
-onMounted(() => {
-  const directoryPath = libraryStore.path;
-  if (path) {
-    path.value = directoryPath;
-    ipcRenderer.invoke('loadDirectory', directoryPath)
-      .then((result) => items.value = result);
-  }
-  const directoryName = libraryStore.name;
-  if (directoryName) {
-    name.value = directoryName;
-  }
-})
+const path = computed<string>(() => libraryStore.path);
+const name = computed<string>(() => libraryStore.name);
 
 function onBackClick() {
   window.history.back();

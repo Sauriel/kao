@@ -62,7 +62,7 @@ li {
 li:hover {
   scale: 1.2;
   box-shadow: 4px 4px 8px var(--color-background--dark);
-  z-index: 99;
+  z-index: 90;
 }
 
 h3 {

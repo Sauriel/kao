@@ -32,8 +32,17 @@ export const useSettingsStore = defineStore('settings-store', () => {
     }
   });
 
+  const openInDialog = computed<boolean>({
+    get: () => settings.value.openInDialog,
+    set: (newValue: boolean) => {
+      settings.value.openInDialog = newValue;
+      saveSettings();
+    }
+  });
+
   return {
     gridView,
-    previewAspectRatio
+    previewAspectRatio,
+    openInDialog
   }
 })

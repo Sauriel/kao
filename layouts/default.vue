@@ -32,6 +32,7 @@
       </section>
       <main :class="$style.main">
         <slot />
+        <UiDirectoryViewDialog />
       </main>
     </div>
 </template>

@@ -23,6 +23,7 @@
     "@types/line-reader": "^0.0.34",
     "@types/node": "^18",
     "@vueuse/core": "^10.2.0",
+    "eiyuu": "^1.1.1",
     "electron": "^25.1.1",
     "electron-builder": "^24.4.0",
     "electron-devtools-installer": "^3.2.0",
@@ -38,5 +39,8 @@
   },
   "overrides": {
     "vue": "latest"
+  },
+  "dependencies": {
+    "mitt": "^3.0.1"
   }
 }

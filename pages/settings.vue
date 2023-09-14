@@ -11,6 +11,14 @@
           Grid
         </template>
       </UiSwitch>
+      <UiSwitch v-model="openInDialog">
+        <template #off>
+          Position nicht merken
+        </template>
+        <template #on>
+          Position merken
+        </template>
+      </UiSwitch>
     </div>
   </div>
 </template>
@@ -23,6 +31,11 @@ const settingsStore = useSettingsStore();
 const gridView = computed({
   get: () => settingsStore.gridView,
   set: (value: boolean) => settingsStore.gridView = value
+});
+
+const openInDialog = computed({
+  get: () => settingsStore.openInDialog,
+  set: (value: boolean) => settingsStore.openInDialog = value
 });
 </script>
 
