@@ -55,7 +55,7 @@ async function handleDirectory(path: string, dir: Dirent, importInfo: ImportInfo
       if (content.isDirectory()) {
         folders.push(await handleDirectory(directoryPath, content, importInfo));
       } else {
-        handleFile(directoryPath, content, files, info);
+        await handleFile(directoryPath, content, files, info);
         importInfo.countFile();
       }
     }
@@ -72,7 +72,6 @@ async function handleDirectory(path: string, dir: Dirent, importInfo: ImportInfo
   } catch (error) {
     console.error(error);
   }
-
   importInfo.countFolder();
   return libraryFolder;
 }
@@ -110,7 +109,8 @@ async function scanDirectoryAndPersist(rootPath: string): Promise<string> {
               DB.update<LibraryDBEntry>(
                 { path: fulfilledResult.value.path },
                 fulfilledResult.value,
-                { upsert: true });
+                { upsert: true })
+                .catch(e => console.error(e));
             } else {
               const rejectedResult = result as PromiseRejectedResult;
               console.error(rejectedResult);
@@ -118,7 +118,7 @@ async function scanDirectoryAndPersist(rootPath: string): Promise<string> {
           }
           return importInfo.result();
         })
-    });
+    })
 }
 
 export default scanDirectoryAndPersist;

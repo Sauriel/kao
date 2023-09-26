@@ -26,16 +26,18 @@ onMounted(() => {
   ipcRenderer.invoke('getLibraryPath')
     .then(path => {
       if (path && path.trim() !== '') {
-        loadLibrary(path);
+        loadLibrary();
       } else {
         hasPath.value = false;
       }
     })
+    .catch(e => console.error(e));
 })
 
 function loadLibrary(path?: string) {
   ipcRenderer.invoke('loadDirectory', path)
-    .then((result: DirOrFile[]) => items.value = result);
+    .then((result: DirOrFile[]) => items.value = result)
+    .catch(e => console.error(e));
 }
 
 filterStore.$subscribe((mutation, state) => {
@@ -44,7 +46,8 @@ filterStore.$subscribe((mutation, state) => {
     loadLibrary();
   } else {
     ipcRenderer.invoke('searchDirectory', state.searchTerm)
-      .then((result: DirOrFile[]) => items.value = result);
+      .then((result: DirOrFile[]) => items.value = result)
+    .catch(e => console.error(e));
   }
 })
 

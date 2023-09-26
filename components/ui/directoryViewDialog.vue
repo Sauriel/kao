@@ -62,7 +62,7 @@ function onClose() {
   display: block;
 }
 
-#directory-view-dialog::v-deep .back-button {
+#directory-view-dialog:deep(.back-button) {
   position: fixed;
   left: 1.5rem;
   top: 2.5rem;

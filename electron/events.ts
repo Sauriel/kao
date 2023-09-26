@@ -21,7 +21,7 @@ export function addEvents(win: BrowserWindow) {
   ipcMain.handle('loadDirectory', (event, path: string | undefined) => {
     let directoryPath = path;
     if (!directoryPath || directoryPath.trim() === '') {
-      return lookupDirectory(settings.library.path.get(), true);
+      return lookupDirectory(settings.library.path.get());
     } else {
       return lookupDirectory(directoryPath);
     }

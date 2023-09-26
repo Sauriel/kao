@@ -3,6 +3,7 @@ import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
 import path from 'path';
 import WindowStateKeeper from './windowStateKeeper';
 import { addEvents } from './events';
+import runStartupTasks from './startup';
 
 // The built directory structure
 //
@@ -88,5 +89,7 @@ async function bootstrap() {
 app.whenReady()
   .then(() => {
     bootstrap();
+    runStartupTasks();
     addEvents(win);
-  });
+  })
+  .catch(e => console.error(e));

@@ -39,7 +39,8 @@ const hasPath = computed(() => !!props.path);
 
 onMounted(() => {
   ipcRenderer.invoke('loadDirectory', props.path)
-      .then((result) => items.value = result);
+    .then((result) => items.value = result)
+    .catch(e => console.error(e));
 })
 </script>
 

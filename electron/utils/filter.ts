@@ -29,7 +29,17 @@ async function filterDirectory(searchTerm: string): Promise<DirOrFile[]> {
   return DB.find<LibraryDBEntry>({
     $where: function () {
       const doc = this as LibraryDBEntry;
-      return doc.name?.toLowerCase().includes(searchTerm.toLowerCase());
+      const nameMatches = doc.name?.toLowerCase().includes(searchTerm.toLowerCase());
+      let infoMatches = false;
+      if (doc.info) {
+        for (const value of Object.values(doc.info)) {
+          if (value.toLowerCase().includes(searchTerm.toLowerCase())) {
+            infoMatches = true;
+            break;
+          }
+        }
+      }
+      return nameMatches || infoMatches;
     }
   })
   .then(convertDbEntries);

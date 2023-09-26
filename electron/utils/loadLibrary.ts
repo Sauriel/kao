@@ -88,13 +88,13 @@ async function lookupDirectory(path: string, persist?: boolean): Promise<DirOrFi
       if (persist) {
         console.time('loading library in db');
         runInNewThread('./dist-electron/libraryScanner.js', path)
-        .then((result) => {
-          console.timeEnd('loading library in db');
-          console.log(result);
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-        });
+          .then((result) => {
+            console.timeEnd('loading library in db');
+            console.log(result);
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+          });
       }
       return dirsAndFiles;
     })

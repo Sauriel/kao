@@ -9,9 +9,16 @@ import { useFilterStore } from '@/stores/filter';
 
 const filterStore = useFilterStore();
 
+let timeout: number | NodeJS.Timeout | null = null;
+
 function onSearchInput(event: InputEvent) {
   const value = (event.target as HTMLInputElement).value;
-  filterStore.$patch({ searchTerm: value });
+  if (timeout) {
+    clearTimeout(timeout);
+  }
+  timeout = setTimeout(() => {
+    filterStore.$patch({ searchTerm: value });
+  }, 1000);
 }
 </script>
 
