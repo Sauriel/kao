@@ -5,12 +5,8 @@
 		}
 	],
 	"settings": {
-		"cssCustomProperties.files": [
-			"./src/styles/global.css"
-		],
-		"cSpell.words": [
-			"nanostores"
-		],
+		"cssCustomProperties.files": ["./src/styles/global.css"],
+		"cSpell.words": ["consola", "nanostores", "tauri"],
 		"files.exclude": {
 			"**/.git": true,
 			"**/.svn": true,

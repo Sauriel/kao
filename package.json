@@ -1,46 +1,51 @@
 {
-  "name": "Kao",
+  "name": "kao",
+  "version": "0.0.3",
   "private": true,
-  "version": "0.0.2",
-  "description": "Kao - The Avatar Browser",
-  "author": {
-    "name": "Sauriel",
-    "email": "mail@sauriel.net",
-    "url": "https://www.sauriel.net"
-  },
-  "main": "dist-electron/main.js",
+  "type": "module",
   "scripts": {
-    "dev": "nuxt dev",
-    "build": "nuxi build --prerender && electron-builder",
-    "build:web-only": "nuxt build",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "dev": "vite dev",
+    "tauri:dev": "tauri dev",
+    "tauri": "tauri",
+    "build": "vite build",
+    "preview": "vite preview",
+    "tauri:build": "tauri build",
+    "tauri:icon": "tauri icon logo/icon.png",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "lint": "prettier --check . && eslint .",
+    "format": "prettier --write ."
   },
   "devDependencies": {
-    "@nuxt/devtools": "latest",
-    "@pinia/nuxt": "^0.4.11",
-    "@types/line-reader": "^0.0.34",
-    "@types/node": "^18",
-    "@vueuse/core": "^10.2.0",
-    "eiyuu": "^1.1.1",
-    "electron": "^25.1.1",
-    "electron-builder": "^24.4.0",
-    "electron-devtools-installer": "^3.2.0",
-    "electron-store": "^8.1.0",
-    "line-reader": "^0.4.0",
-    "nedb-promises": "^6.2.1",
-    "nuxt": "^3.5.2",
-    "nuxt-electron": "^0.5.0",
-    "nuxt-icon": "^0.4.1",
-    "pinia": "^2.1.4",
-    "vite-plugin-electron": "^0.12.0",
-    "vite-plugin-electron-renderer": "^0.14.5"
+    "@iconify/svelte": "^3.1.6",
+    "@sveltejs/adapter-static": "^3.0.1",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@tauri-apps/cli": "^1.5.10",
+    "@types/eslint": "^8.56.0",
+    "@types/lodash": "^4.14.202",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "bits-ui": "^0.18.2",
+    "consola": "^3.2.3",
+    "dayjs": "^1.11.10",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-svelte": "^2.36.0-next.4",
+    "localforage": "^1.10.0",
+    "lodash": "^4.17.21",
+    "prettier": "^3.1.1",
+    "prettier-plugin-svelte": "^3.1.2",
+    "svelte": "^5.0.0-next.1",
+    "svelte-check": "^3.6.0",
+    "tauri-plugin-window-state-api": "github:tauri-apps/tauri-plugin-window-state#v1",
+    "tslib": "^2.4.1",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.3"
   },
   "overrides": {
-    "vue": "latest"
-  },
-  "dependencies": {
-    "mitt": "^3.0.1"
+    "bits-ui": {
+      "svelte": "$svelte"
+    }
   }
 }
