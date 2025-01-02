@@ -1,38 +1,48 @@
-# create-svelte
+# Kao
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Kao is a personal application lovingly crafted using **Svelte** and **Tauri**, designed to help organize, view, and search large collections of character avatars. Inspired by and created specifically for my wife, this app brings beauty and efficiency to the world of digital character collections.
 
-## Creating a project
+---
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Features
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+- **Organized Collections**: Easily manage and categorize your character avatars.
+- **Fast Searching**: Quickly find specific avatars using intuitive search capabilities.
+- **User-Friendly Interface**: A sleek, modern UI built with Svelte for a seamless experience.
+- **Lightweight and Fast**: Powered by Tauri for a small footprint and exceptional performance.
+- **Cross-Platform**: Runs on Windows, macOS, and Linux.
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+---
 
-## Developing
+## Screenshots
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+*(Add screenshots here to showcase the app)*
 
-```bash
-npm run dev
+---
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Usage
 
-## Building
+- Launch Kao and import your avatar collection.
+- Use the search bar to find characters quickly.
+- Explore and organize your collection using the intuitive interface.
 
-To create a production version of your app:
+---
 
-```bash
-npm run build
-```
+## Tech Stack
 
-You can preview the production build with `npm run preview`.
+- **Frontend**: Svelte
+- **Backend**: Tauri
+- **Languages**: JavaScript, TypeScript, Rust
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## Acknowledgments
+
+- Inspired by my wife and her love for organizing characters.
+- Special thanks to the Svelte and Tauri communities for their amazing tools and documentation.
